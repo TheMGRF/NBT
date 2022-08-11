@@ -1,16 +1,12 @@
 package net.querz.mca;
 
-import net.querz.nbt.tag.CompoundTag;
-import net.querz.nbt.tag.ListTag;
-import net.querz.nbt.io.NamedTag;
 import net.querz.nbt.io.NBTDeserializer;
 import net.querz.nbt.io.NBTSerializer;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import net.querz.nbt.io.NamedTag;
+import net.querz.nbt.tag.CompoundTag;
+import net.querz.nbt.tag.ListTag;
+
+import java.io.*;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
@@ -72,8 +68,10 @@ public class Chunk implements Iterable<Section> {
 
 		CompoundTag level;
 		if ((level = data.getCompoundTag("Level")) == null) {
-			throw new IllegalArgumentException("data does not contain \"Level\" tag");
+			System.out.println("Data did not contain \"Level\" tag using base data...");
+			level = data;
 		}
+
 		dataVersion = data.getInt("DataVersion");
 		inhabitedTime = level.getLong("InhabitedTime");
 		lastUpdate = level.getLong("LastUpdate");
