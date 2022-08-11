@@ -1,15 +1,13 @@
 package net.querz.mca;
 
-import static net.querz.mca.LoadFlags.*;
 import net.querz.nbt.tag.ByteArrayTag;
 import net.querz.nbt.tag.CompoundTag;
 import net.querz.nbt.tag.ListTag;
 import net.querz.nbt.tag.LongArrayTag;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
+import static net.querz.mca.LoadFlags.*;
 
 public class Section implements Comparable<Section> {
 
@@ -31,7 +29,8 @@ public class Section implements Comparable<Section> {
 		this.dataVersion = dataVersion;
 		height = sectionRoot.getNumber("Y").byteValue();
 
-		ListTag<?> rawPalette = sectionRoot.getListTag("Palette");
+		CompoundTag blockStates = sectionRoot.getCompoundTag("block_states");
+		ListTag<?> rawPalette = blockStates.getListTag("palette");
 		if (rawPalette == null) {
 			return;
 		}
@@ -42,14 +41,14 @@ public class Section implements Comparable<Section> {
 		}
 
 		ByteArrayTag blockLight = sectionRoot.getByteArrayTag("BlockLight");
-		LongArrayTag blockStates = sectionRoot.getLongArrayTag("BlockStates");
+		LongArrayTag blockData = blockStates.getLongArrayTag("data");
 		ByteArrayTag skyLight = sectionRoot.getByteArrayTag("SkyLight");
 
 		if ((loadFlags & BLOCK_LIGHTS) != 0) {
 			this.blockLight = blockLight != null ? blockLight.getValue() : null;
 		}
 		if ((loadFlags & BLOCK_STATES) != 0) {
-			this.blockStates = blockStates != null ? blockStates.getValue() : null;
+			this.blockStates = blockData != null ? blockData.getValue() : null;
 		}
 		if ((loadFlags & SKY_LIGHT) != 0) {
 			this.skyLight = skyLight != null ? skyLight.getValue() : null;

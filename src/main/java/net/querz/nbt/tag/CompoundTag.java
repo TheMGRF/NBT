@@ -1,14 +1,9 @@
 package net.querz.nbt.tag;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.function.BiConsumer;
-
 import net.querz.io.MaxDepthIO;
+
+import java.util.*;
+import java.util.function.BiConsumer;
 
 public class CompoundTag extends Tag<Map<String, Tag<?>>>
 		implements Iterable<Map.Entry<String, Tag<?>>>, Comparable<CompoundTag>, MaxDepthIO {
@@ -46,6 +41,13 @@ public class CompoundTag extends Tag<Map<String, Tag<?>>>
 
 	public boolean containsKey(String key) {
 		return getValue().containsKey(key);
+	}
+
+	public boolean containsKey(String key, int id) {
+		Tag<?> tag = get(key);
+		if (tag == null) return false;
+
+		return tag.getID() == id;
 	}
 
 	public boolean containsValue(Tag<?> value) {

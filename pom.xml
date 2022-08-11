@@ -6,11 +6,20 @@
 
     <groupId>net.querz</groupId>
     <artifactId>NBT</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>themgrf-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
-    
+
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>
