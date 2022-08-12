@@ -3,5 +3,5 @@ package net.querz;
 @FunctionalInterface
 public interface ExceptionSupplier<T, E extends Exception> {
 
-	T run() throws E;
+    T run() throws E;
 }

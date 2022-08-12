@@ -6,7 +6,7 @@ package net.querz.io;
 @SuppressWarnings("serial")
 public class MaxDepthReachedException extends RuntimeException {
 
-	public MaxDepthReachedException(String msg) {
-		super(msg);
-	}
+    public MaxDepthReachedException(String msg) {
+        super(msg);
+    }
 }
