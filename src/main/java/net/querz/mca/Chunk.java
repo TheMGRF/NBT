@@ -119,7 +119,11 @@ public class Chunk implements Iterable<Section> {
         }
         status = data.getString("Status");
         if ((loadFlags & STRUCTURES) != 0) {
-            structures = data.getCompoundTag("Structures");
+            if (data.containsKey("structures")) {
+                structures = data.getCompoundTag("structures");
+            } else if (data.containsKey("Structures")) {
+                structures = data.getCompoundTag("Structures");
+            }
         }
         if ((loadFlags & (BLOCK_LIGHTS | BLOCK_STATES | SKY_LIGHT)) != 0 && data.containsKey("sections", ListTag.ID)) {
             for (CompoundTag section : data.getListTag("sections").asCompoundTagList()) {
