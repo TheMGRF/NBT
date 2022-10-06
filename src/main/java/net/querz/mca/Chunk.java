@@ -97,7 +97,7 @@ public class Chunk implements Iterable<Section> {
             entities = data.containsKey("entities", CompoundTag.ID) ? data.getListTag("entities").asCompoundTagList() : null;
         }
         if ((loadFlags & TILE_ENTITIES) != 0) {
-            tileEntities = data.containsKey("block_entities", CompoundTag.ID) ? data.getListTag("block_entities").asCompoundTagList() : null;
+            tileEntities = data.containsKey("block_entities", ListTag.ID) ? data.getListTag("block_entities").asCompoundTagList() : null;
         }
         if ((loadFlags & TILE_TICKS) != 0) {
             tileTicks = data.containsKey("block_ticks", CompoundTag.ID) ? data.getListTag("block_ticks").asCompoundTagList() : null;
