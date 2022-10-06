@@ -8,10 +8,7 @@ import net.querz.nbt.tag.IntArrayTag;
 import net.querz.nbt.tag.ListTag;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 import static net.querz.mca.LoadFlags.*;
 
@@ -97,7 +94,7 @@ public class Chunk implements Iterable<Section> {
             entities = data.containsKey("entities", CompoundTag.ID) ? data.getListTag("entities").asCompoundTagList() : null;
         }
         if ((loadFlags & TILE_ENTITIES) != 0) {
-            tileEntities = data.containsKey("block_entities", ListTag.ID) ? data.getListTag("block_entities").asCompoundTagList() : null;
+            tileEntities = readTileEntities();
         }
         if ((loadFlags & TILE_TICKS) != 0) {
             tileTicks = data.containsKey("block_ticks", CompoundTag.ID) ? data.getListTag("block_ticks").asCompoundTagList() : null;
@@ -138,6 +135,21 @@ public class Chunk implements Iterable<Section> {
             data = null;
             partial = true;
         }
+    }
+
+    private ListTag<CompoundTag> readTileEntities() {
+        if (data.containsKey("block_entities", ListTag.ID)) {
+            ListTag<CompoundTag> list = data.getListTag("block_entities").asCompoundTagList();
+            for (CompoundTag tag : list) {
+                String id = tag.getString("id");
+                if (id.equals("minecraft:sign")) {
+                    tag.putString("id", "Sign");
+                    tag.putString("HypixelBuild.signFormat", "STANDARD");
+                }
+            }
+            return list;
+        }
+        return null;
     }
 
     /**
