@@ -1,9 +1,6 @@
 package net.querz.mca;
 
-import net.querz.nbt.tag.ByteArrayTag;
-import net.querz.nbt.tag.CompoundTag;
-import net.querz.nbt.tag.ListTag;
-import net.querz.nbt.tag.LongArrayTag;
+import net.querz.nbt.tag.*;
 
 import java.util.*;
 
@@ -19,6 +16,8 @@ public class Section implements Comparable<Section> {
     private byte[] skyLight;
     private int height;
     int dataVersion;
+
+    private CompoundTag uniformBlockState;
 
     public Section(CompoundTag sectionRoot, int dataVersion) {
         this(sectionRoot, dataVersion, ALL_DATA);
@@ -42,6 +41,14 @@ public class Section implements Comparable<Section> {
 
         ByteArrayTag blockLight = sectionRoot.getByteArrayTag("BlockLight");
         LongArrayTag blockData = blockStates.getLongArrayTag("data");
+        if (blockData == null) {
+            CompoundTag uniformPalette = (CompoundTag) rawPalette.get(0);
+            StringTag nameTag = (StringTag) uniformPalette.get("Name");
+            String name = nameTag.getValue();
+            if (!name.equals("minecraft:air")) {
+                this.uniformBlockState = uniformPalette;
+            }
+        }
         ByteArrayTag skyLight = sectionRoot.getByteArrayTag("SkyLight");
 
         if ((loadFlags & BLOCK_LIGHTS) != 0) {
@@ -138,6 +145,9 @@ public class Section implements Comparable<Section> {
      * @return The block state data of this block.
      */
     public CompoundTag getBlockStateAt(int blockX, int blockY, int blockZ) {
+        if (uniformBlockState != null) {
+            return uniformBlockState;
+        }
         return getBlockStateAt(getBlockIndex(blockX, blockY, blockZ));
     }
 
