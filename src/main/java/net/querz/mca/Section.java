@@ -29,6 +29,9 @@ public class Section implements Comparable<Section> {
         height = sectionRoot.getNumber("Y").byteValue();
 
         CompoundTag blockStates = sectionRoot.getCompoundTag("block_states");
+        if (blockStates == null) {
+            return; // TODO
+        }
         ListTag<?> rawPalette = blockStates.getListTag("palette");
         if (rawPalette == null) {
             return;
@@ -37,6 +40,19 @@ public class Section implements Comparable<Section> {
         for (int i = 0; i < palette.size(); i++) {
             CompoundTag data = palette.get(i);
             putValueIndexedPalette(data, i);
+        }
+
+        CompoundTag biomes = sectionRoot.getCompoundTag("biomes");
+        if (biomes != null) {
+            ListTag<?> rawBiomesPalette = biomes.getListTag("palette");
+            if (rawBiomesPalette != null) {
+                ListTag<StringTag> biomesPalette = rawBiomesPalette.asStringTagList();
+                for (StringTag tag : biomesPalette) {
+                    if (!tag.getValue().equals("minecraft:plains")) {
+                        System.out.println("biome=" + tag);
+                    }
+                }
+            }
         }
 
         ByteArrayTag blockLight = sectionRoot.getByteArrayTag("BlockLight");
